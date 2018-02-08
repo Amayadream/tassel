@@ -25,7 +25,7 @@ public interface PacLoader {
     List<ProxyRule> analyzeRules(byte[] ruleBytes);
 
     /**
-     * 判断是否走代理
+     * 判断是否走代理(默认或禁用的不走代理, 其他走代理)
      * @param proxyRules 代理规则列表
      * @param url
      * @return

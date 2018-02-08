@@ -55,9 +55,8 @@ public class ConfigLoader {
      * 刷新配置
      * @return
      */
-    public static ConfigLoader refresh() {
-        load(Constants.CONFIG_DIR, false);
-        return instance;
+    public ConfigLoader refresh() {
+        return refresh(false);
     }
 
     /**
@@ -65,7 +64,7 @@ public class ConfigLoader {
      * @param force 是否强制刷新配置
      * @return
      */
-    public static ConfigLoader refresh(boolean force) {
+    public ConfigLoader refresh(boolean force) {
         load(Constants.CONFIG_DIR, force);
         return instance;
     }
@@ -75,7 +74,7 @@ public class ConfigLoader {
      * @param filePath  文件目录(相对)
      * @param force     是否强制加载(是否考虑文件是否修改)
      */
-    private static void load(String filePath, boolean force) {
+    private void load(String filePath, boolean force) {
         File file = new File(filePath);
         if (!file.isFile()) {
             throw new RuntimeException(String.format("[ConfigLoader] config load failed, file [%s] not found", filePath));
