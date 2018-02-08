@@ -1,7 +1,6 @@
-package com.amayadream.tassel.config.loader;
+package com.amayadream.tassel.loader.config;
 
 import com.alibaba.fastjson.JSONObject;
-import com.amayadream.tassel.config.ProxyConfig;
 import com.amayadream.tassel.constant.Constants;
 import com.google.common.base.Charsets;
 import lombok.extern.slf4j.Slf4j;
@@ -75,9 +74,13 @@ public class ConfigLoader {
      * @param force     是否强制加载(是否考虑文件是否修改)
      */
     private void load(String filePath, boolean force) {
+        //初始化配置
+        proxyConfig = new ProxyConfig();
+
         File file = new File(filePath);
         if (!file.isFile()) {
-            throw new RuntimeException(String.format("[ConfigLoader] config load failed, file [%s] not found", filePath));
+            log.error("[ConfigLoader] config load failed, file [{}] not found, now use default config", filePath);
+            return;
         }
 
         if (!force && file.lastModified() == lastModified) {
@@ -87,13 +90,12 @@ public class ConfigLoader {
 
         try {
             BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
-            //初始化配置实体
-            proxyConfig = new ProxyConfig();
             proxyConfig = JSONObject.parseObject(bis, Charsets.UTF_8, ProxyConfig.class);
             lastModified = file.lastModified();
         } catch (IOException e) {
             log.error("[ConfigLoader] config load failed, maybe file format error, now use default config", e);
         }
+
     }
 
 }

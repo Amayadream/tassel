@@ -1,4 +1,4 @@
-package com.amayadream.tassel.config.common;
+package com.amayadream.tassel.loader;
 
 /**
  * 代理模式

@@ -1,5 +1,6 @@
 package com.amayadream.tassel;
 
+import com.amayadream.tassel.loader.config.ConfigLoader;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -37,9 +38,11 @@ public class SocksServer {
 //            .childHandler(new SocksServerInitializer())
             ;
 
-            log.info("[SocksServer] start at port 1081");
+            ConfigLoader configLoader = ConfigLoader.getInstance();
+            int port = configLoader.proxyConfig().getLocalPort();
+            log.info("[SocksServer] start at port {}", port);
 
-            bootstrap.bind(1081).sync().channel().closeFuture().sync();
+            bootstrap.bind(port).sync().channel().closeFuture().sync();
         } catch (Exception e) {
             log.error("[SocksServer] server has error ...", e);
         } finally {

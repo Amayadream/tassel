@@ -1,4 +1,4 @@
-package com.amayadream.tassel.config.pac.rule;
+package com.amayadream.tassel.loader.pac.rule;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

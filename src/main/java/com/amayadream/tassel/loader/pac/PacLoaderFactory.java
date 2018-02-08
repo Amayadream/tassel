@@ -1,7 +1,7 @@
-package com.amayadream.tassel.config.pac;
+package com.amayadream.tassel.loader.pac;
 
-import com.amayadream.tassel.config.common.PacSource;
-import com.amayadream.tassel.config.pac.rule.ProxyRule;
+import com.amayadream.tassel.loader.PacSource;
+import com.amayadream.tassel.loader.pac.rule.ProxyRule;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public class PacLoaderFactory {
     public static PacLoaderFactory getInstance(PacSource source) {
         if (instance == null) {
             synchronized (PacLoaderFactory.class) {
-                instance = new PacLoaderFactory(source);
+                instance = new PacLoaderFactory(pacSource);
             }
         }
         return instance;
@@ -49,7 +49,7 @@ public class PacLoaderFactory {
             pacLoader = new GfwlistPacLoader();
         }
         pacSource = source;
-        proxyRules = pacLoader.analyzeRules(pacLoader.proxyRules());
+        proxyRules = pacLoader.analyzeRules(pacLoader.fetchRules());
     }
 
     /**

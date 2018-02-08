@@ -1,7 +1,7 @@
-package com.amayadream.tassel.config.pac;
+package com.amayadream.tassel.loader.pac;
 
-import com.amayadream.tassel.config.pac.rule.MatchMode;
-import com.amayadream.tassel.config.pac.rule.ProxyRule;
+import com.amayadream.tassel.loader.pac.rule.MatchMode;
+import com.amayadream.tassel.loader.pac.rule.ProxyRule;
 import com.google.common.base.Charsets;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class GfwlistPacLoader implements PacLoader {
 
     @Override
-    public byte[] proxyRules() {
+    public byte[] fetchRules() {
         byte[] ruleBytes = new byte[]{};
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(5, TimeUnit.SECONDS)
@@ -105,6 +105,20 @@ public class GfwlistPacLoader implements PacLoader {
             proxyRule.setRule(rule);
             proxyRules.add(proxyRule);
         }
+
+        //重新排序, 提高禁用模式优先级
+        proxyRules.sort((rule1, rule2) -> {
+            if (rule1.getDisable()) {
+                return 1;
+            }
+            if (rule2.getDisable()) {
+                return -1;
+            }
+            return 0;
+        });
+
+        log.info("[GfwListPacLoader] analyze {} rules", proxyRules.size());
+
         return proxyRules;
     }
 

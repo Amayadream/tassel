@@ -1,8 +1,8 @@
 package com.amayadream.tassel.pac;
 
-import com.amayadream.tassel.config.pac.GfwlistPacLoader;
-import com.amayadream.tassel.config.pac.PacLoader;
-import com.amayadream.tassel.config.pac.rule.ProxyRule;
+import com.amayadream.tassel.loader.pac.GfwlistPacLoader;
+import com.amayadream.tassel.loader.pac.PacLoader;
+import com.amayadream.tassel.loader.pac.rule.ProxyRule;
 import com.google.common.base.Stopwatch;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,13 +20,13 @@ public class GfwlistPacLoaderTest {
         PacLoader pacLoader = new GfwlistPacLoader();
 
         Stopwatch watch1 = Stopwatch.createStarted();
-        byte[] ruleBytes = pacLoader.proxyRules();
+        byte[] ruleBytes = pacLoader.fetchRules();
         List<ProxyRule> proxyRules = pacLoader.analyzeRules(ruleBytes);
         watch1.stop();
         log.info("获取gfwlist成功, 一共解析出 {} 条, 总计耗时: {} ms", proxyRules.size(), watch1.elapsed(TimeUnit.MILLISECONDS));
 
         Stopwatch watch2 = Stopwatch.createStarted();
-        String url = "http://www.bianlei.com";
+        String url = "http://www.youtube.com";
         boolean flag = pacLoader.decideProxy(proxyRules, url);
         watch2.stop();
         log.info("地址({})的代理判断结果为: {}, 总计耗时: {} ms", url, flag, watch2.elapsed(TimeUnit.MILLISECONDS));

@@ -1,6 +1,7 @@
-package com.amayadream.tassel.config;
+package com.amayadream.tassel.loader.config;
 
-import com.amayadream.tassel.config.common.ProxyMode;
+import com.amayadream.tassel.loader.PacSource;
+import com.amayadream.tassel.loader.ProxyMode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +22,7 @@ public class ProxyConfig implements Serializable {
 
     private Integer localPort;              //本地端口
     private ProxyMode proxyMode;            //代理模式(DIRECT:直连模式, PAC:PAC模式, PROXY:代理模式)
+    private PacSource pacSource;            //PAC源
     private Integer index;                  //默认节点索引(如果开启负载均衡则此配置失效)
     private Boolean enableLoadBalance;      //是否开启负载均衡
     private List<ProxyServer> proxyList;    //代理服务列表
@@ -31,6 +33,7 @@ public class ProxyConfig implements Serializable {
     public ProxyConfig() {
         this.localPort = 1081;
         this.proxyMode = ProxyMode.DIRECT;
+        this.pacSource = PacSource.GFWLIST;
         this.index = 0;
         this.enableLoadBalance = true;
         this.proxyList = new ArrayList<>();
